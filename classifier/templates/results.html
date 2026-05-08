@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Results - HSI Project{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+
+    <h2 class="fw-bold mb-4">📊 Model Evaluation Results</h2>
+
+    <!-- Accuracy -->
+    <div class="alert alert-info" role="alert">
+        <h5 class="mb-0">✅ Model Accuracy: <strong>{{ accuracy }}%</strong></h5>
+    </div>
+
+    <!-- Confusion Matrix -->
+    
+    <!-- Classification Report -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">📋 Classification Report</div>
+        <div class="card-body">
+            <table class="table table-bordered table-hover table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Class</th>
+                        <th>Precision</th>
+                        <th>Recall</th>
+                        <th>F1-score</th>
+                        <th>Support</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in report %}
+                    <tr>
+                        <td>{{ row.class }}</td>
+                        <td>{{ row.precision }}</td>
+                        <td>{{ row.recall }}</td>
+                        <td>{{ row.f1 }}</td>
+                        <td>{{ row.support }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Prediction Result{% endblock %}
+
+{% block content %}
+<div class="container my-4 text-center">
+  <h2 class="fw-bold mb-4">Prediction Result</h2>
+
+  {% if crop_name %}
+  <div class="alert alert-success">
+    Predicted Crop Type: <strong>{{ crop_name }}</strong>
+  </div>
+  {% endif %}
+
+  {% if predicted_image %}
+  <div class="row justify-content-center mt-4">
+    <div class="col-lg-6 mb-4">
+      <div class="card shadow-sm">
+        <div class="card-header bg-success text-white">Predicted Classification Map</div>
+        <div class="card-body">
+          <img src="{% static predicted_image %}" class="img-fluid" alt="Predicted Map">
+        </div>
+      </div>
+    </div>
+
+    {% if health_image %}
+    <div class="col-lg-6 mb-4">
+      <div class="card shadow-sm">
+        <div class="card-header bg-warning text-dark">Crop Health / Stress Map</div>
+        <div class="card-body">
+          <img src="{% static health_image %}" class="img-fluid" alt="Crop Health Map">
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  {% if advisory %}
+  <div class="row text-start mt-4 g-4">
+    <div class="col-lg-5">
+      <div class="card h-100 shadow-sm advisory-card">
+        <div class="card-header bg-dark text-white">Crop Summary</div>
+        <div class="card-body">
+          <p class="mb-2"><strong>Dominant crop/class:</strong> {{ advisory.dominant_crop }}</p>
+          <p class="mb-2"><strong>Area coverage:</strong> {{ advisory.coverage_percent }}%</p>
+          {% if advisory.patch_index %}
+          <p class="mb-0"><strong>Vegetation index:</strong> {{ advisory.patch_index }}</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-7">
+      <div class="card h-100 shadow-sm advisory-card">
+        <div class="card-header bg-success text-white">Health / Stress Detection</div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            {% for item in advisory.health_summary %}
+            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+              <span>{{ item.status }}</span>
+              <span class="badge bg-secondary">{{ item.percent }}%</span>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% if advisory.crop_summaries %}
+  <div class="card shadow-sm advisory-card text-start mt-4">
+    <div class="card-header bg-dark text-white">Crop-wise Summary Table</div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+          <thead class="table-dark">
+            <tr>
+              <th>Crop/Class</th>
+              <th>Pixel Count</th>
+              <th>Area Coverage</th>
+              <th>Health Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for crop in advisory.crop_summaries %}
+            <tr>
+              <td>{{ crop.crop }}</td>
+              <td>{{ crop.pixel_count }}</td>
+              <td>{{ crop.coverage_percent }}%</td>
+              <td>{{ crop.health_status }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm advisory-card text-start mt-4">
+    <div class="card-header bg-primary text-white">Crop-wise Farming Recommendation Table</div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+          <thead class="table-primary">
+            <tr>
+              <th>Crop/Class</th>
+              <th>Suggested Fertilizer</th>
+              <th>Irrigation Note</th>
+              <th>Soil/Crop Care Tip</th>
+              <th>Next Crop</th>
+              <th>Rotation Reason</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for crop in advisory.crop_summaries %}
+            <tr>
+              <td>{{ crop.crop }}</td>
+              <td>{{ crop.recommendation.fertilizer }}</td>
+              <td>{{ crop.recommendation.irrigation }}</td>
+              <td>{{ crop.recommendation.tip }}</td>
+              <td>{{ crop.recommendation.rotation_crop }}</td>
+              <td>{{ crop.recommendation.rotation_reason }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="row text-start mt-4">
+    <div class="col-12">
+      <div class="card h-100 shadow-sm advisory-card">
+        <div class="card-header bg-primary text-white">Farming Recommendation</div>
+        <div class="card-body">
+          <p class="mb-2"><strong>Suggested fertilizer:</strong> {{ advisory.recommendation.fertilizer }}</p>
+          <p class="mb-2"><strong>Irrigation note:</strong> {{ advisory.recommendation.irrigation }}</p>
+          <p class="mb-2"><strong>Soil/crop care tip:</strong> {{ advisory.recommendation.tip }}</p>
+          <hr>
+          <p class="mb-1"><strong>Next crop suggestion:</strong> {{ advisory.recommendation.rotation_crop }}</p>
+          <p class="mb-0 text-muted">{{ advisory.recommendation.rotation_reason }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  {% endif %}
+</div>
+{% endblock %}

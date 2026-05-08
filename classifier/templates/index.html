@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Home - HSI Classifier{% endblock %}
+
+{% block content %}
+<div class="text-center my-5">
+  <h1 class="fw-bold mb-3">🌍 Hyperspectral Image Classification</h1>
+  <p class="lead text-muted">
+    Classify land-cover types using <strong>3D CNNs</strong> on public HSI datasets (Indian Pines, Pavia, Salinas).
+  </p>
+</div>
+
+<div class="row mt-5">
+  <div class="col-md-4">
+    <div class="card shadow-sm h-100">
+      <div class="card-body">
+        <h5 class="card-title">📊 Dataset</h5>
+        <p>Indian Pines, Pavia University, and Salinas datasets — hyperspectral images with 200+ spectral bands.</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card shadow-sm h-100">
+      <div class="card-body">
+        <h5 class="card-title">🤖 Model</h5>
+        <p>3D CNN model trained using PyTorch to extract spectral-spatial features and classify each pixel.</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card shadow-sm h-100">
+      <div class="card-body">
+        <h5 class="card-title">🌟 Features</h5>
+        <p>- Train and Test Models<br>- Predict Land Covers<br>- Visualize Classification Maps</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Upload Dataset{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <h3 class="fw-bold mb-4">Upload Your .mat File for Prediction</h3>
+  <form action="{% url 'upload_predict' %}" method="post" enctype="multipart/form-data" class="p-4 bg-white rounded shadow-sm">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="dataset" class="form-label fw-semibold">Dataset type:</label>
+      <select class="form-select" name="dataset" id="dataset">
+        <option value="indian_pines">Indian Pines</option>
+        <option value="pavia_university">Pavia University</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="file" class="form-label fw-semibold">Choose a .mat file:</label>
+      <input type="file" class="form-control" name="file" required>
+      <div class="form-text">Ensure the .mat file contains your patch or image array.</div>
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Predict</button>
+  </form>
+</div>
+{% endblock %}

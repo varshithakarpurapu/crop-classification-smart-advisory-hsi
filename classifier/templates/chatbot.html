@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block title %}RAG Chatbot{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+  <div class="row g-4">
+    <div class="col-lg-4">
+      <div class="card shadow-sm chatbot-panel">
+        <div class="card-header bg-dark text-white">Smart Agriculture Assistant</div>
+        <div class="card-body">
+          {% if ai_configured %}
+          <div class="alert alert-success py-2">AI mode is configured.</div>
+          {% else %}
+          <div class="alert alert-warning py-2">AI mode needs GEMINI_API_KEY. Local RAG still works.</div>
+          {% endif %}
+          {% if latest_advisory %}
+          <p class="mb-2"><strong>Latest result:</strong> {{ latest_advisory.dominant_crop }}</p>
+          <p class="mb-3"><strong>Coverage:</strong> {{ latest_advisory.coverage_percent }}%</p>
+          <p class="text-muted mb-0">Ask about crop health, fertilizer, irrigation, crop rotation, disease symptoms, or the prediction result.</p>
+          {% else %}
+          <p class="text-muted mb-0">Run a prediction first for result-specific answers. You can still ask general HSI and crop disease questions.</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="card shadow-sm mt-4 chatbot-panel">
+        <div class="card-header bg-success text-white">Example Questions</div>
+        <div class="card-body">
+          <ul class="mb-0">
+            <li>Which crop covers the largest area?</li>
+            <li>What fertilizer is suggested for corn?</li>
+            <li>Explain crop stress in simple words.</li>
+            <li>Why is soybean suggested after corn?</li>
+            <li>Wheat leaves are folding. What are the likely causes?</li>
+            <li>How should I improve this field?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-8">
+      <div class="card shadow-sm chatbot-box">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+          <span>RAG Chatbot</span>
+          <form method="post" class="m-0">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="new_chat">
+            <button class="btn btn-sm btn-light" type="submit">New Chat</button>
+          </form>
+        </div>
+        <div class="card-body">
+          <div class="chat-history mb-4">
+            {% if chat_history %}
+              {% for chat in chat_history %}
+              <div class="chat-message user-message">
+                <strong>You:</strong> {{ chat.question }}
+                <span class="badge bg-secondary ms-2">{{ chat.mode }}</span>
+              </div>
+              <div class="chat-message bot-message">
+                <strong>Assistant:</strong>
+                {% if chat.answer_type %}
+                <div class="chat-answer-meta">
+                  <span class="badge bg-primary-subtle text-primary-emphasis">{{ chat.answer_type }}</span>
+                </div>
+                {% endif %}
+                <pre>{{ chat.answer }}</pre>
+                {% if chat.note %}
+                <div class="chat-note">{{ chat.note }}</div>
+                {% endif %}
+                {% if chat.sources %}
+                <div class="chat-sources">
+                  <div class="fw-semibold mb-2">Sources used</div>
+                  <ul class="mb-0">
+                    {% for source in chat.sources %}
+                    <li>
+                      {% if source.url %}
+                      <a href="{{ source.url }}" target="_blank" rel="noopener noreferrer">{{ source.title }}</a>
+                      {% else %}
+                      {{ source.title }}
+                      {% endif %}
+                      {% if source.source_type == "local" %}
+                      <span class="badge text-bg-light ms-1">Local</span>
+                      {% else %}
+                      <span class="badge text-bg-light ms-1">Web</span>
+                      {% endif %}
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+                {% endif %}
+              </div>
+              {% endfor %}
+            {% else %}
+            <div class="text-muted text-center py-5">Ask your first question about the classification result.</div>
+            {% endif %}
+          </div>
+
+          <form method="post" class="d-flex gap-2">
+            {% csrf_token %}
+            <select class="form-select chatbot-mode-select" name="mode">
+              <option value="local">Local RAG</option>
+              <option value="ai">AI + Proper RAG</option>
+            </select>
+            <input type="text" class="form-control" name="question" placeholder="Ask about crop health, disease symptoms, fertilizer, irrigation, or rotation..." required>
+            <button class="btn btn-primary" type="submit">Ask</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

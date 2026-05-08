@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}About - HSI Classifier{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <h2 class="fw-bold mb-4 text-center">About the Hyperspectral Image Classification Project</h2>
+
+  <div class="card shadow-sm p-4 mb-4">
+    <h4 class="fw-bold text-primary mb-3">🎯 Objective</h4>
+    <p>
+      Classify land-cover types from hyperspectral imagery using a deep learning-based encoder-decoder model.
+    </p>
+  </div>
+
+  <div class="card shadow-sm p-4 mb-4">
+    <h4 class="fw-bold text-success mb-3">🧠 Model Overview</h4>
+    <p>
+      Our 3D CNN captures spatial and spectral information jointly, providing high accuracy on benchmark datasets.
+    </p>
+  </div>
+
+  <div class="card shadow-sm p-4 mb-4">
+    <h4 class="fw-bold text-warning mb-3">📊 Dataset Information</h4>
+    <ul>
+      <li><strong>Indian Pines:</strong> 145×145 pixels, 200 bands, 16 classes</li>
+      <li><strong>Pavia University:</strong> 610×340 pixels, 103 bands, 9 classes</li>
+      <li><strong>Salinas:</strong> 512×217 pixels, 204 bands, 16 classes</li>
+    </ul>
+  </div>
+</div>
+{% endblock %}

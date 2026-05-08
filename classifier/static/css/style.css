@@ -1,0 +1,72 @@
+body { font-family: 'Segoe UI', sans-serif; background: #f8f9fa; }
+.card img { max-height: 400px; object-fit: contain; }
+.advisory-card {
+  border-radius: 8px;
+}
+
+.advisory-card .card-header {
+  font-weight: 700;
+}
+
+.advisory-card .card-body {
+  min-height: 230px;
+}
+
+.chatbot-panel,
+.chatbot-box {
+  border-radius: 8px;
+}
+
+.chat-history {
+  min-height: 360px;
+  max-height: 520px;
+  overflow-y: auto;
+}
+
+.chat-message {
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+}
+
+.user-message {
+  background: #e7f1ff;
+}
+
+.bot-message {
+  background: #f1f3f5;
+}
+
+.bot-message pre {
+  margin: 8px 0 0;
+  white-space: pre-wrap;
+  font-family: inherit;
+}
+
+.chat-answer-meta {
+  margin-top: 8px;
+}
+
+.chat-note {
+  margin-top: 10px;
+  color: #6c757d;
+  font-size: 0.95rem;
+}
+
+.chat-sources {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #d9dee3;
+}
+
+.chat-sources ul {
+  padding-left: 18px;
+}
+
+.chat-sources a {
+  text-decoration: none;
+}
+
+.chatbot-mode-select {
+  max-width: 170px;
+}
