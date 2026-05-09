@@ -6,7 +6,6 @@ import urllib.request
 
 GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
 GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
-# GEMINI_API_KEY = "AIzaSyDsRL9uLBCd0Yx2Ros-dJ2pigb6kGEvbcI"
 
 def is_gemini_configured():
     return bool(os.environ.get("GEMINI_API_KEY"))
